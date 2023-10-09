@@ -25,8 +25,6 @@ public class Util {
     public static SessionFactory getConnectionHibernate() {
         if (sessionFactory == null) {
             try {
-                Configuration configuration = new Configuration();
-
                 Properties settings = new Properties();
                 settings.put(Environment.URL, DB_URL + "?useSSL=false");
                 settings.put(Environment.USER, DB_USERNAME);
@@ -36,7 +34,7 @@ public class Util {
 
                 settings.put(Environment.SHOW_SQL, "true");
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-                settings.put(Environment.HBM2DDL_AUTO, "update");
+                settings.put(Environment.HBM2DDL_AUTO, "create");
 
                 sessionFactory = new Configuration()
                         .addProperties(settings)
