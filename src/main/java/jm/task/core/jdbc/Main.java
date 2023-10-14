@@ -3,20 +3,24 @@ package jm.task.core.jdbc;
 import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
 
+import static jm.task.core.jdbc.util.Util.closeConnectionHibernate;
+
 public class Main {
     public static void main(String[] args) {
-        UserService userDao = new UserServiceImpl();
+        UserService userService = new UserServiceImpl();
 
-        userDao.createUsersTable();
+        userService.createUsersTable();
 
-        userDao.saveUser("Darina", "Sergeeva", (byte) 22);
-        userDao.saveUser("Mihail", "Shevchenko", (byte) 25);
-        userDao.saveUser("Aleksey", "Morozov", (byte) 26);
-        userDao.saveUser("Anastasia", "Sugatova", (byte) 25);
+        userService.saveUser("Darina", "Sergeeva", (byte) 22);
+        userService.saveUser("Mihail", "Shevchenko", (byte) 25);
+        userService.saveUser("Aleksey", "Morozov", (byte) 26);
+        userService.saveUser("Anastasia", "Sugatova", (byte) 25);
 
-        userDao.removeUserById(2);
-        userDao.getAllUsers();
-        userDao.cleanUsersTable();
-        userDao.dropUsersTable();
+        userService.removeUserById(2);
+        userService.getAllUsers();
+        userService.cleanUsersTable();
+        userService.dropUsersTable();
+
+        closeConnectionHibernate();
     }
 }
