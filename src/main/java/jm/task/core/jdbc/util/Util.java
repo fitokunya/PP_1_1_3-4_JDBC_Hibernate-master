@@ -50,8 +50,8 @@ public class Util {
         return sessionFactory;
     }
 
+    private static Connection connection = null;
     public static Connection getConnection() {
-        Connection connection = null;
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
             System.out.println("Connection SUCCESS");
@@ -62,7 +62,14 @@ public class Util {
         return connection;
     }
 
-//    public static Connection closeConnection() {
-//
-//    }
+    public static Connection closeConnection(){
+        try {
+            getConnection().close();
+            System.out.println("Connection CLOSE");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return connection;
+    }
 }
