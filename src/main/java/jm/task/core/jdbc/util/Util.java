@@ -1,4 +1,7 @@
 package jm.task.core.jdbc.util;
+// UPDATE HIBER 1
+
+import jm.task.core.jdbc.model.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,13 +9,9 @@ import java.sql.SQLException;
 
 import java.util.Properties;
 
-import jm.task.core.jdbc.model.User;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-
-import javax.imageio.spi.ServiceRegistry;
 
 
 public class Util {
@@ -22,6 +21,11 @@ public class Util {
     private static final String DB_PASSWORD = "Qwer123580...";
 
     private static SessionFactory sessionFactory;
+    private static Connection connection = null;
+
+    private Util() {
+    }
+
     public static SessionFactory getConnectionHibernate() {
         if (sessionFactory == null) {
             try {
@@ -50,7 +54,11 @@ public class Util {
         return sessionFactory;
     }
 
-    private static Connection connection = null;
+    public static void closeConnectionHibernate() {
+        getConnectionHibernate().close();
+        System.out.println("Connection CLOSE");
+    }
+
     public static Connection getConnection() {
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
@@ -62,10 +70,12 @@ public class Util {
         return connection;
     }
 
-    public static Connection closeConnection(){
+    public static Connection closeConnection() {
         try {
-            getConnection().close();
-            System.out.println("Connection CLOSE");
+            if (connection != null) { // checked the status of object
+                getConnection().close();
+                System.out.println("Connection CLOSE");
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
